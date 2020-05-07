@@ -1,0 +1,43 @@
+class Solution {
+    public int minCut(String s) {
+        int dp[][] = new int[s.length()][s.length()];
+		int ccol = 1;
+		while (ccol < dp[0].length) {
+
+			int row = 0;
+			int col = ccol;
+			while (row < dp[0].length && col < dp[0].length) {
+
+				if (s.charAt(row) == s.charAt(col)) {
+					if (dp[row + 1][col - 1] == 0) {
+						dp[row][col] = dp[row + 1][col - 1];
+					} else {
+						int min = Integer.MAX_VALUE;
+						for (int p = row; p < col; p++) {
+							int ans = dp[row][p] + dp[p + 1][col] + 1;
+							if (ans < min) {
+								min = ans;
+							}
+						}
+						dp[row][col] = min;
+					}
+				} else {
+					int min = Integer.MAX_VALUE;
+					for (int p = row; p < col; p++) {
+						int ans = dp[row][p] + dp[p + 1][col] + 1;
+						if (ans < min) {
+							min = ans;
+						}
+					}
+					dp[row][col] = min;
+				}
+				col++;
+				row++;
+			}
+
+			ccol++;
+		}
+        return dp[0][dp[0].length - 1];
+
+    }
+}
